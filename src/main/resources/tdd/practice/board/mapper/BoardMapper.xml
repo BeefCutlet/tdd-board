@@ -1,0 +1,135 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="tdd.practice.board.mapper.BoardMapper">
+    <insert id="save" useGeneratedKeys="true" keyProperty="boardNo">
+        INSERT INTO board(
+            board_writer,
+            board_title,
+            board_content,
+            board_category,
+            board_upload,
+            board_views,
+            board_secret,
+            board_group,
+            board_order,
+            board_level)
+        VALUES (
+            #{boardWriter},
+            #{boardTitle},
+            #{boardContent},
+            #{boardCategory},
+            NOW(),
+            0,
+            #{boardSecret},
+            #{boardGroup},
+            #{boardOrder},
+            #{boardLevel})
+    </insert>
+
+    <update id="update">
+        UPDATE board
+        <set>
+            <if test="boardTitle != null and boardTitle != ''">
+                board_title = #{boardTitle}
+            </if>
+            <if test="boardContent != null and boardContent != ''">
+                board_content = #{boardContent}
+            </if>
+            <if test="boardCategory != null and boardCategory != ''">
+                board_category = #{boardCategory}
+            </if>
+            <if test="boardSecret != null and boardSecret != ''">
+                board_secret = #{boardSecret}
+            </if>
+        </set>
+        WHERE board_no = #{boardNo}
+    </update>
+
+    <update id="updateViews">
+        UPDATE board
+        SET board_views = board_views + 1
+        WHERE board_no = #{boardNo}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM board
+        WHERE board_no = #{boardNo}
+    </delete>
+
+    <select id="findByBoardNo" resultMap="boardResult">
+        SELECT
+            board_no,
+            board_writer,
+            board_title,
+            board_content,
+            board_category,
+            board_upload,
+            board_views,
+            board_secret,
+            board_group,
+            board_order,
+            board_level,
+            member_no,
+            member_email,
+            member_nickname,
+            member_password,
+            member_registration_day,
+            member_last_login,
+            member_auth
+        FROM board
+        JOIN member
+        ON board_writer = member_no
+        WHERE board_no = #{boardNo}
+    </select>
+
+    <select id="findAll" resultMap="boardResult">
+        SELECT
+            board_no,
+            board_writer,
+            board_title,
+            board_content,
+            board_category,
+            board_upload,
+            board_views,
+            board_secret,
+            board_group,
+            board_order,
+            board_level,
+            member_no,
+            member_email,
+            member_nickname,
+            member_password,
+            member_registration_day,
+            member_last_login,
+            member_auth
+        FROM board
+        JOIN member
+        ON board_writer = member_no
+    </select>
+
+    <resultMap id="boardResult" type="Board">
+        <id property="boardNo" column="board_no"/>
+        <result property="boardTitle" column="board_title"/>
+        <result property="boardContent" column="board_content"/>
+        <result property="boardCategory" column="board_category"/>
+        <result property="boardUpload" column="board_upload"/>
+        <result property="boardViews" column="board_views"/>
+        <result property="boardSecret" column="board_secret"/>
+        <result property="boardGroup" column="board_group"/>
+        <result property="boardOrder" column="board_order"/>
+        <result property="boardLevel" column="board_level"/>
+        <association property="writer" resultMap="writerResult"/>
+    </resultMap>
+
+    <resultMap id="writerResult" type="Member">
+        <id property="memberNo" column="member_no"/>
+        <result property="memberEmail" column="member_email"/>
+        <result property="memberNickname" column="member_nickname"/>
+        <result property="memberPassword" column="member_password"/>
+        <result property="memberRegistrationDay" column="member_registration_day"/>
+        <result property="memberLastLogin" column="member_last_login"/>
+        <result property="memberAuth" column="member_auth"/>
+    </resultMap>
+</mapper>

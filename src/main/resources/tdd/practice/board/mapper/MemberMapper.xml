@@ -1,0 +1,71 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="tdd.practice.board.mapper.MemberMapper">
+    <!-- 0: 탈퇴, 1: 일반, 9: 관리자 -->
+    <insert id="save" useGeneratedKeys="true" keyProperty="memberNo">
+        INSERT INTO member (
+            member_email,
+            member_nickname,
+            member_password,
+            member_registration_day,
+            member_last_login,
+            member_auth)
+        VALUES (
+            #{memberEmail},
+            #{memberNickname},
+            #{memberPassword},
+            NOW(),
+            NOW(),
+            1)
+    </insert>
+    <update id="update">
+        UPDATE member
+        <set>
+            <if test="memberNickname != null and memberNickname != ''">
+                member_nickname=#{memberNickname}
+            </if>
+            <if test="memberPassword != null and memberPassword != ''">
+                member_password=#{memberPassword}
+            </if>
+            <if test="memberLastLogin != null and memberLastLogin != ''">
+                member_last_login=#{memberLastLogin}
+            </if>
+            <if test="memberAuth != null and memberAuth != ''">
+                member_auth=#{memberAuth}
+            </if>
+        </set>
+        WHERE member_no=#{memberNo}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM member
+        WHERE member_no=#{memberNo}
+    </delete>
+
+    <select id="findByMemberNo" resultType="Member">
+        SELECT
+            member_no,
+            member_email,
+            member_nickname,
+            member_password,
+            member_registration_day,
+            member_last_login,
+            member_auth
+        FROM member
+        WHERE member_no = #{memberNo}
+    </select>
+
+    <select id="findAll" resultType="Member">
+        SELECT
+            member_no,
+            member_email,
+            member_nickname,
+            member_password,
+            member_registration_day,
+            member_last_login,
+            member_auth
+        FROM member
+    </select>
+</mapper>
