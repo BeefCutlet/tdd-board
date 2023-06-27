@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter @Setter
 public class Board {
     private Integer boardNo;
-    private Member boardWriter;
+    private Integer boardWriter;
     private String boardTitle;
     private String boardContent;
     private String boardCategory;
@@ -16,4 +16,5 @@ public class Board {
     private Integer boardGroup;
     private Integer BoardOrder;
     private Integer BoardLevel;
+    private Member writer;
 }
