@@ -120,7 +120,15 @@
         <result property="boardGroup" column="board_group"/>
         <result property="boardOrder" column="board_order"/>
         <result property="boardLevel" column="board_level"/>
-        <association property="writer" resultMap="writerResult"/>
+        <association property="writer" javaType="Member">
+            <id property="memberNo" column="member_no"/>
+            <result property="memberEmail" column="member_email"/>
+            <result property="memberNickname" column="member_nickname"/>
+            <result property="memberPassword" column="member_password"/>
+            <result property="memberRegistrationDay" column="member_registration_day"/>
+            <result property="memberLastLogin" column="member_last_login"/>
+            <result property="memberAuth" column="member_auth"/>
+        </association>
     </resultMap>
 
     <resultMap id="writerResult" type="Member">

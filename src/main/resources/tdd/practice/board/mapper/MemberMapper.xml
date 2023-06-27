@@ -18,7 +18,7 @@
             #{memberPassword},
             NOW(),
             NOW(),
-            1)
+            #{memberAuth})
     </insert>
     <update id="update">
         UPDATE member
