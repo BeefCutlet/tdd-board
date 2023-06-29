@@ -6,8 +6,10 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 import tdd.practice.board.dto.Board;
 import tdd.practice.board.mapper.BoardMapper;
+import tdd.practice.board.util.pager.PageInfo;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Repository
@@ -38,6 +40,11 @@ public class BoardRepositoryImpl implements BoardRepository {
     }
 
     @Override
+    public Integer findCount(Map<String, String> searchCondition) {
+        return sqlSessionTemplate.getMapper(BoardMapper.class).findCount(searchCondition);
+    }
+
+    @Override
     public Board findByBoardNo(Integer boardNo) {
         return sqlSessionTemplate.getMapper(BoardMapper.class).findByBoardNo(boardNo);
     }
@@ -45,5 +52,10 @@ public class BoardRepositoryImpl implements BoardRepository {
     @Override
     public List<Board> findAll() {
         return sqlSessionTemplate.getMapper(BoardMapper.class).findAll();
+    }
+
+    @Override
+    public List<Board> findAllBySearchCondition(PageInfo pageInfo) {
+        return sqlSessionTemplate.getMapper(BoardMapper.class).findAllBySearchCondition(pageInfo);
     }
 }
