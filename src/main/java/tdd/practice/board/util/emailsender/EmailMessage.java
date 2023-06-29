@@ -1,4 +1,4 @@
-package tdd.practice.board.util;
+package tdd.practice.board.util.emailsender;
 
 import lombok.Builder;
 import lombok.Getter;
