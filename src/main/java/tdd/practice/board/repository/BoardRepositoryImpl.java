@@ -25,8 +25,8 @@ public class BoardRepositoryImpl implements BoardRepository {
     }
 
     @Override
-    public Integer update(Integer boardNo) {
-        return sqlSessionTemplate.getMapper(BoardMapper.class).update(boardNo);
+    public Integer update(Board board) {
+        return sqlSessionTemplate.getMapper(BoardMapper.class).update(board);
     }
 
     @Override
