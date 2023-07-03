@@ -24,9 +24,10 @@ dependencies {
 
 	//JavaMailSender
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
-
 	//spring security
 	implementation 'org.springframework.boot:spring-boot-starter-security'
+	//thymeleaf
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
