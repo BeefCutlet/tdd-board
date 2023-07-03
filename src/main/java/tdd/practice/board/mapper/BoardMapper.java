@@ -11,7 +11,7 @@ import java.util.Map;
 public interface BoardMapper {
 
     Integer save(Board board);
-    Integer update(Integer boardNo);
+    Integer update(Board board);
     Integer updateViews(Integer boardNo);
     Integer delete(Integer boardNo);
     Integer findCount(Map<String, String> searchCondition);
