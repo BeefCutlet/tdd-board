@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tdd.practice.board.dto.Board;
 import tdd.practice.board.exception.BoardNotFoundException;
+import tdd.practice.board.exception.SaveFailedException;
 import tdd.practice.board.repository.BoardRepository;
 import tdd.practice.board.util.pager.Pager;
 
@@ -21,6 +22,9 @@ public class BoardService {
 
     public Board save(Board board) {
         Board savedBoard = boardRepository.save(board);
+        if (savedBoard.getBoardNo() == null) {
+            throw new SaveFailedException("Save Failed");
+        }
         return savedBoard;
     }
 
