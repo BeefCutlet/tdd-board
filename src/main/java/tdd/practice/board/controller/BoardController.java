@@ -1,9 +1,7 @@
 package tdd.practice.board.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tdd.practice.board.dto.Board;
 import tdd.practice.board.service.BoardService;
 
@@ -15,7 +13,7 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    @GetMapping("/list")
+    @GetMapping("/search")
     public List<Board> boardList(
             @RequestParam(required = false) Integer currentPage,
             @RequestParam(required = false) String keyword,
@@ -27,5 +25,15 @@ public class BoardController {
         return boardList;
     }
 
+    @PutMapping("/write")
+    public String writeBoard(@RequestBody Board board) {
+        boardService.save(board);
+        return "/board/main";
+    }
 
+    @PutMapping("/edit/{boardNo}")
+    public String editBoard(@RequestBody Board board) {
+        boardService.update(board);
+        return "/board/main";
+    }
 }
