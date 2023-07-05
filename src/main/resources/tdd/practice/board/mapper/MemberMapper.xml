@@ -20,20 +20,21 @@
             NOW(),
             #{memberAuth})
     </insert>
+
     <update id="update">
         UPDATE member
         <set>
             <if test="memberNickname != null and memberNickname != ''">
-                member_nickname=#{memberNickname}
+                member_nickname=#{memberNickname},
             </if>
             <if test="memberPassword != null and memberPassword != ''">
-                member_password=#{memberPassword}
+                member_password=#{memberPassword},
             </if>
             <if test="memberLastLogin != null and memberLastLogin != ''">
-                member_last_login=#{memberLastLogin}
+                member_last_login=#{memberLastLogin},
             </if>
             <if test="memberAuth != null and memberAuth != ''">
-                member_auth=#{memberAuth}
+                member_auth=#{memberAuth},
             </if>
         </set>
         WHERE member_no=#{memberNo}
