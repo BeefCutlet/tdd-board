@@ -31,13 +31,11 @@ public class RedirectController {
     }
 
     @GetMapping("/board/write")
-    public String boardWrite(@PathVariable int boardNo, Model model) {
-        Board board = boardService.search(boardNo);
-        model.addAttribute("board", board);
+    public String boardWrite() {
         return "board/write";
     }
 
-    @GetMapping("/board/edit")
+    @GetMapping("/board/edit/{boardNo}")
     public String boardEdit(@PathVariable int boardNo, Model model) {
         Board board = boardService.search(boardNo);
         model.addAttribute("board", board);
