@@ -7,7 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import tdd.practice.board.dto.Board;
+import tdd.practice.board.dto.Comment;
 import tdd.practice.board.service.BoardService;
+import tdd.practice.board.service.CommentService;
 
 import java.util.List;
 
@@ -17,6 +19,7 @@ import java.util.List;
 public class RedirectController {
 
     private final BoardService boardService;
+    private final CommentService commentService;
 
     @GetMapping("/login")
     public String loginPage() {
@@ -30,8 +33,22 @@ public class RedirectController {
         return "board/main";
     }
 
-    @GetMapping("/board/write")
-    public String boardWrite() {
+    @GetMapping("/board/detail/{boardNo}")
+    public String boardDetail(@PathVariable int boardNo, Model model) {
+        Board searchedBoard = boardService.search(boardNo);
+        List<Comment> commentList = commentService.searchList(boardNo);
+        model.addAttribute("board", searchedBoard);
+        return "board/detail";
+    }
+
+    @GetMapping("/board/write/{boardNo}")
+    public String boardWrite(@PathVariable(required = false) Integer boardNo, Model model) {
+        Board board = null;
+        if (boardNo != null) {
+            board = boardService.search(boardNo);
+        }
+        model.addAttribute("board", board);
+
         return "board/write";
     }
 
