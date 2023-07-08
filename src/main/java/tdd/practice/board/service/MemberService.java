@@ -13,9 +13,14 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     //회원 정보 저장
-    public Member saveMember(Member member) {
+    public Member save(Member member) {
         Member savedMember = memberRepository.save(member);
         return savedMember;
+    }
+
+    //회원 정보 수정
+    public void update(Member member) {
+        memberRepository.update(member);
     }
 
     //단일 회원 정보 가져오기
