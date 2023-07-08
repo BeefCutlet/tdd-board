@@ -35,6 +35,11 @@ public class BoardRepositoryImpl implements BoardRepository {
     }
 
     @Override
+    public Integer updateBoardOrder(Board board) {
+        return sqlSessionTemplate.getMapper(BoardMapper.class).updateBoardOrder(board);
+    }
+
+    @Override
     public Integer delete(Integer boardNo) {
         return sqlSessionTemplate.getMapper(BoardMapper.class).delete(boardNo);
     }
@@ -42,6 +47,16 @@ public class BoardRepositoryImpl implements BoardRepository {
     @Override
     public Integer findCount(Map<String, String> searchCondition) {
         return sqlSessionTemplate.getMapper(BoardMapper.class).findCount(searchCondition);
+    }
+
+    @Override
+    public Integer findOrderCount(int boardGroup) {
+        return sqlSessionTemplate.getMapper(BoardMapper.class).findOrderCount(boardGroup);
+    }
+
+    @Override
+    public Integer findLastGroup() {
+        return sqlSessionTemplate.getMapper(BoardMapper.class).findLastGroup();
     }
 
     @Override

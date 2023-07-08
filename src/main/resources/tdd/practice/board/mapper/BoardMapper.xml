@@ -53,6 +53,14 @@
         WHERE board_no = #{boardNo}
     </update>
 
+    <!-- 답글 순서 수정 -->
+    <update id="updateBoardOrder">
+        UPDATE board
+        SET board_order = board_order + 1
+        WHERE board_group = #{boardGroup}
+        AND board_order > #{boardOrder}
+    </update>
+
     <delete id="delete">
         DELETE FROM board
         WHERE board_no = #{boardNo}
@@ -64,6 +72,19 @@
         <if test="condition != null and keyword != null">
             WHERE ${condition} LIKE CONCAT('%', #{keyword}, '%')
         </if>
+    </select>
+
+    <!-- 게시글 그룹 내 게시글 수 조회 -->
+    <select id="findOrderCount" resultType="int">
+        SELECT COUNT(*)
+        FROM board
+        WHERE board_group = #{boardGroup}
+    </select>
+
+    <!-- 최종 그룹 인덱스 조회 -->
+    <select id="findLastGroup" resultType="int">
+        SELECT MAX(board_group)
+        FROM board
     </select>
 
     <select id="findByBoardNo" resultMap="boardResult">
@@ -120,7 +141,7 @@
             <if test="condition != null and keyword != null">
                 WHERE ${condition} LIKE CONCAT('%', #{keyword}, '%')
             </if>
-            ORDER BY board_no DESC
+            ORDER BY board_group DESC, board_order
         ) temp
         LIMIT #{offset}, #{pageSize}
     </select>
