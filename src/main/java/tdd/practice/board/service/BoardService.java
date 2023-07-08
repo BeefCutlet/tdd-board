@@ -2,6 +2,7 @@ package tdd.practice.board.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tdd.practice.board.dto.Board;
 import tdd.practice.board.exception.BoardNotFoundException;
 import tdd.practice.board.exception.SaveFailedException;
@@ -20,14 +21,43 @@ public class BoardService {
     private static final Integer BLOCK_SIZE = 5;
     private final BoardRepository boardRepository;
 
+    @Transactional
     public Board save(Board board) {
+        if (board.getBoardGroup() == null) {
+            //최종 그룹 번호 조회
+            Integer boardGroupCount = boardRepository.findLastGroup();
+            //새 글 등록
+            if (boardGroupCount == null) {
+                board.setBoardGroup(1);
+            } else {
+                board.setBoardGroup(boardGroupCount + 1);
+            }
+            board.setBoardOrder(1);
+            board.setBoardLevel(1);
+        } else {
+            //답글 등록
+            Integer boardOrderCount = boardRepository.findOrderCount(board.getBoardGroup());
+            if (board.getBoardLevel() == 1) {
+                //원글에 답글 달기
+                board.setBoardOrder(boardOrderCount + 1);
+            } else {
+                //답글에 답글 달기
+                boardRepository.updateBoardOrder(board); //답글 순서 뒤로 미루기
+                board.setBoardOrder(board.getBoardOrder() + 1);
+            }
+            board.setBoardGroup(board.getBoardGroup());
+            board.setBoardLevel(board.getBoardLevel() + 1);
+        }
+
         Board savedBoard = boardRepository.save(board);
         if (savedBoard.getBoardNo() == null) {
             throw new SaveFailedException("Save Failed");
         }
+
         return savedBoard;
     }
 
+    @Transactional
     public void update(Board board) {
         boardRepository.update(board);
     }
