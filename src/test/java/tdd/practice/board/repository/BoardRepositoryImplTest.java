@@ -98,9 +98,9 @@ class BoardRepositoryImplTest {
             board.setBoardContent("content-" + (i+1));
             board.setBoardCategory("category-" + (i+1));
             board.setBoardSecret(1);
-            board.setBoardGroup(0);
-            board.setBoardOrder(0);
-            board.setBoardLevel(0);
+            board.setBoardGroup(i+1);
+            board.setBoardOrder(i+1);
+            board.setBoardLevel(i+1);
             boardRepository.save(board);
         }
 
@@ -134,6 +134,7 @@ class BoardRepositoryImplTest {
         Member member = new Member();
         memberRepository.save(member);
 
+        //임시 게시글 31개 입력
         for (int i = 0; i < 31; i++) {
             Board board = new Board();
             board.setBoardWriter(member.getMemberNo());
@@ -141,19 +142,28 @@ class BoardRepositoryImplTest {
             board.setBoardContent("content-" + (i+1));
             board.setBoardCategory("category-" + (i+1));
             board.setBoardSecret(1);
-            board.setBoardGroup(0);
-            board.setBoardOrder(0);
-            board.setBoardLevel(0);
+            board.setBoardGroup(i+1);
+            board.setBoardOrder(i+1);
+            board.setBoardLevel(i+1);
             boardRepository.save(board);
             log.info("boardTitle={}", board.getBoardTitle());
         }
 
+        //검색조건 : 제목
+        //검색내용 : tle-1
         Map<String, String> searchCondition = new HashMap<>();
         searchCondition.put("condition", "board_title");
         searchCondition.put("keyword", "tle-1");
+        //검색 조건에 맞는 게시글 개수
         Integer totalBoard = boardRepository.findCount(searchCondition);
         assertThat(totalBoard).isEqualTo(11);
 
+        //검색
+        //현재 페이지 : 1
+        //페이지 당 게시글 수 : 10
+        //페이지 블럭 당 페이지 수 : 5
+        //검색조건 : 제목
+        //검색내용 : tle-1
         Pager pager = Pager.builder()
                 .currentPage(1)
                 .pageSize(10)
