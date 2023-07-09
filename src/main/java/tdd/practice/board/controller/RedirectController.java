@@ -27,9 +27,7 @@ public class RedirectController {
     }
 
     @GetMapping("/board/main")
-    public String boardMain(Model model) {
-        List<Board> boardList = boardService.searchList(1, null, null);
-        model.addAttribute("boardList", boardList);
+    public String boardMain() {
         return "board/main";
     }
 
@@ -38,6 +36,7 @@ public class RedirectController {
         Board searchedBoard = boardService.search(boardNo);
         List<Comment> commentList = commentService.searchList(boardNo);
         model.addAttribute("board", searchedBoard);
+        model.addAttribute("commentList", commentList);
         return "board/detail";
     }
 
