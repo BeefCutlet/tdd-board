@@ -12,5 +12,5 @@ public class Member {
     private String memberPassword;
     private String memberRegistrationDay;
     private String memberLastLogin;
-    private Integer memberAuth;
+    private String memberAuth;
 }
