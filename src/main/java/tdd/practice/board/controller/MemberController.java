@@ -7,20 +7,20 @@ import tdd.practice.board.service.MemberService;
 
 @RestController
 @RequiredArgsConstructor
-public class LoginController {
+public class MemberController {
 
     private final MemberService memberService;
-
-    @PostMapping("/login")
-    public String login(@RequestBody Member member) {
-
-        return "";
-    }
 
     @GetMapping("/password/find")
     public Member findPassword(@RequestBody Member member) {
         Member findMember = memberService.findMember(member.getMemberNo());
         return findMember;
+    }
+
+    @PostMapping("/join")
+    public String join(@RequestBody Member member) {
+        memberService.save(member);
+        return "OK";
     }
 
     @PutMapping("/password/modify")
