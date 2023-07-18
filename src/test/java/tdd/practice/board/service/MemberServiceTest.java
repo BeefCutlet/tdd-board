@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import tdd.practice.board.dto.Member;
+import tdd.practice.board.exception.MemberExistException;
 import tdd.practice.board.exception.MemberNotFoundException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -18,6 +19,22 @@ class MemberServiceTest {
 
     @Autowired
     private MemberService memberService;
+
+    @Test
+    void memberAlreadyExist() {
+        Member member1 = new Member();
+        member1.setMemberEmail("TEST EMAIL");
+        member1.setMemberNickname("TEST NICKNAME");
+        member1.setMemberPassword("TEST PASSWORD");
+
+        Member member2 = new Member();
+        member2.setMemberEmail("TEST EMAIL");
+        member2.setMemberNickname("TEST NICKNAME");
+        member2.setMemberPassword("TEST PASSWORD");
+
+        memberService.save(member1);
+        assertThatThrownBy(() -> memberService.save(member2)).isInstanceOf(MemberExistException.class);
+    }
 
     @Test
     void saveAndFindMemberSuccess() {
