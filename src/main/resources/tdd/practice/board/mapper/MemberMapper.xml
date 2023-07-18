@@ -58,6 +58,19 @@
         WHERE member_no = #{memberNo}
     </select>
 
+    <select id="findByMemberEmail" resultType="Member">
+        SELECT
+            member_no,
+            member_email,
+            member_nickname,
+            member_password,
+            member_registration_day,
+            member_last_login,
+            member_auth
+        FROM member
+        WHERE member_email = #{memberEmail}
+    </select>
+
     <select id="findAll" resultType="Member">
         SELECT
             member_no,

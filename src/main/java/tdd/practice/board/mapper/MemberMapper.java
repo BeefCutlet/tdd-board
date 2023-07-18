@@ -12,5 +12,6 @@ public interface MemberMapper {
     Integer update(Member member);
     Integer delete(Integer memberNo);
     Member findByMemberNo(Integer memberNo);
+    Member findByMemberEmail(String memberEmail);
     List<Member> findAll();
 }
