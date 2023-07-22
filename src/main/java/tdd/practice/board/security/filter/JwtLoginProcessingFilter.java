@@ -46,13 +46,4 @@ public class JwtLoginProcessingFilter extends AbstractAuthenticationProcessingFi
         log.info("authenticatedTokenPrincipal={}", authenticatedToken.getPrincipal().getClass());
         return authenticatedToken;
     }
-
-    private boolean isAjax(HttpServletRequest request) {
-        if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
-            return true;
-        }
-        return false;
-    }
-
-
 }
