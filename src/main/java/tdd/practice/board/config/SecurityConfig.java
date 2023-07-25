@@ -14,6 +14,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import tdd.practice.board.security.filter.JwtLoginProcessingFilter;
+import tdd.practice.board.security.filter.JwtVerifyFilter;
 import tdd.practice.board.security.handler.JwtLoginFailureHandler;
 import tdd.practice.board.security.handler.JwtLoginSuccessHandler;
 
@@ -29,10 +30,11 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
                 .authorizeRequests()
-                .antMatchers("/", "/login", "/login/**", "/logout", "/join").permitAll()
+                .antMatchers("/", "/login/**", "/logout", "/join").permitAll()
                 .anyRequest().authenticated()
             .and()
-                .addFilterBefore(jwtLoginProcessingFilter(http.getSharedObject(AuthenticationConfiguration.class)), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtLoginProcessingFilter(http.getSharedObject(AuthenticationConfiguration.class)), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtVerifyFilter(), JwtLoginProcessingFilter.class);
         return http.build();
     }
 
@@ -43,6 +45,11 @@ public class SecurityConfig {
         jwtLoginProcessingFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler());
         jwtLoginProcessingFilter.setAuthenticationFailureHandler(authenticationFailureHandler());
         return jwtLoginProcessingFilter;
+    }
+
+    @Bean
+    public JwtVerifyFilter jwtVerifyFilter() {
+        return new JwtVerifyFilter();
     }
 
     @Bean
